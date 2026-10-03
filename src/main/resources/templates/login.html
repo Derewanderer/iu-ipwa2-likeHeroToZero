@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anmeldung · Like Hero To Zero</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/}">Like Hero To Zero</a>
+    <a class="nav-link" th:href="@{/}">Zur oeffentlichen Ansicht</a>
+</header>
+<main class="page narrow">
+    <section class="panel">
+        <p class="eyebrow">Geschuetzter Bereich</p>
+        <h1>Anmeldung</h1>
+        <p class="muted">Melde dich an, um Forschungsdaten zu pflegen.</p>
+        <div class="alert error" th:if="${param.error}">Anmeldung fehlgeschlagen. Bitte pruefe Benutzername und Passwort.</div>
+        <div class="alert success" th:if="${param.logout}">Du wurdest abgemeldet.</div>
+        <form method="post" th:action="@{/login}" class="stack-form">
+            <label for="username">Benutzername</label>
+            <input id="username" name="username" type="text" autocomplete="username" required>
+            <label for="password">Passwort</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <button type="submit">Anmelden</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

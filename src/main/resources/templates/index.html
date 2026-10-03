@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Like Hero To Zero</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/}">Like Hero To Zero</a>
+    <a class="nav-link" th:href="@{/login}">Wissenschaftler:innen-Login</a>
+</header>
+<main class="page">
+    <section class="intro">
+        <p class="eyebrow">Offene Klimadaten</p>
+        <h1>Emissionen sichtbar machen.</h1>
+        <p>Vergleiche die neuesten in der Datenbank verfuegbaren CO₂-Werte nach Land.</p>
+    </section>
+
+    <section class="panel">
+        <form class="country-picker" method="get" th:action="@{/}">
+            <label for="country">Land auswaehlen</label>
+            <div class="inline-form">
+                <select id="country" name="country">
+                    <option th:each="entry : ${countries}"
+                            th:value="${entry.key}"
+                            th:text="${entry.value}"
+                            th:selected="${entry.key == selectedIso3}"></option>
+                </select>
+                <button type="submit">Anzeigen</button>
+            </div>
+        </form>
+
+        <div class="metric" th:if="${latest != null}">
+            <div>
+                <p class="eyebrow" th:text="${latest.countryName} + ' · ' + ${latest.year}">Deutschland · 2024</p>
+                <p class="value" th:text="${#numbers.formatDecimal(latest.co2Kt, 1, 'POINT', 1, 'COMMA')}">579 935,6</p>
+                <p class="unit">kt CO₂e</p>
+            </div>
+            <span class="metric-mark" aria-hidden="true">CO₂</span>
+        </div>
+        <p class="muted" th:if="${latest == null}">Noch keine Daten vorhanden.</p>
+
+        <div class="table-wrap" th:if="${!history.isEmpty()}">
+            <h2>Letzte verfuegbare Jahre</h2>
+            <table>
+                <thead><tr><th>Jahr</th><th>Emissionen (kt CO₂e)</th><th>Datenquelle</th></tr></thead>
+                <tbody>
+                <tr th:each="record : ${history}">
+                    <td th:text="${record.year}">2024</td>
+                    <td th:text="${#numbers.formatDecimal(record.co2Kt, 1, 'POINT', 1, 'COMMA')}">579 935,6</td>
+                    <td th:text="${record.source}">World Bank</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <p>Daten: World Bank, Indikator EN.GHG.CO2.MT.CE.AR5. Die dargestellte kt-CO₂e-Einheit ist aus Mt CO₂e umgerechnet.</p>
+    </footer>
+</main>
+</body>
+</html>
